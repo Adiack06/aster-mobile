@@ -1,0 +1,38 @@
+<MyGrid>:
+    message: message
+    messages: messages
+    GridLayout:
+
+        size: root.width, root.height
+        cols:1
+        Button:
+            text: "servers"
+            size_hint_y: 0.12
+        GridLayout:
+            size: root.width, root.height
+            cols: 3
+            Button:
+                text:"channels"
+                size_hint_x: 0.2
+            Label:
+                text_size: self.size
+                id:messages
+                text: ""
+                halign: 'left'
+                valign: 'top'
+
+
+            Button:
+                text: "People"
+                size_hint_x: 0.2
+        GridLayout:
+            size_hint_y: 0.05
+            cols: 2
+            TextInput:
+                id: message
+                size_hint_x: 0.86
+                multinline:False
+            Button:
+                text: "send"
+                size_hint_x: 0.14
+                on_press:root.send_message()

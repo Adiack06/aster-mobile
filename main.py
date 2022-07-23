@@ -1,16 +1,32 @@
-# This is a sample Python script.
+import kivy
+from kivy.app import App
+from kivy.uix.widget import Widget
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.button import Button
+from old.grid import MyGrid
+from kivy.properties import ObjectProperty
+import asterpy
+import threading
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+class MyGrid(Widget):
+    message = ObjectProperty(None)
+    messages = ObjectProperty(None)
+    def __init__(self):
+        super().__init__()
+        self.client = asterpy.Client("cospox.com", 2345, "JingKellyfish", "", 6895244034031013013)
+        self._net_thread = threading.Thread(target=self.client.run)
+        self._net_thread.start()
+
+    def send_message(self):
+        self.client.get_channel_by_name("general").send(self.message.text)
+        self.message.text = ""
+        self.msg = self.client.get_history(self.client.get_channel_by_name("general")))
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+class MyApp(App):
+    def build(self):
+        return MyGrid()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    MyApp().run()
